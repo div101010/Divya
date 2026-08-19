@@ -46,6 +46,9 @@ export default function EffectsLayer() {
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) return undefined;
+    // On touch devices the pointer still follows the finger while it's down,
+    // but the crosshair is hidden until the first contact.
+    const touch = !fine;
 
     const states = parts.map(() => ({ x: 0, y: 0, r: 0, s: 0, o: 0 }));
     const paint = (i) => {
@@ -130,17 +133,17 @@ export default function EffectsLayer() {
       const speed = Math.hypot(dx, dy);
       vx = dx; vy = dy;
 
-      if (!shown && fine) {
+      if (!shown) {
         shown = true;
         gsap.to(cursor.current, { opacity: 1, duration: 0.4 });
       }
 
       stopBloom();
       clearTimeout(idle);
-      if (fine) idle = setTimeout(startBloom, 420);
+      idle = setTimeout(startBloom, 420);
 
       // The faster the pointer travels, the more it throws off.
-      if (fine && speed > 3) {
+      if (speed > 3) {
         const n = Math.min(3, Math.round(speed / 13));
         const dir = Math.atan2(dy, dx) + Math.PI;
         for (let i = 0; i < n; i++) scatter(px, py, dir, 1.5, 26 + speed * 0.8, 0.55 + Math.random() * 0.4);
@@ -150,17 +153,38 @@ export default function EffectsLayer() {
       hot = over ? 1 : 0;
     };
 
-    if (fine) {
-      window.addEventListener('pointermove', onMove, { passive: true });
-      document.documentElement.classList.add('has-cursor');
-    }
+    // Touch drags don't emit pointermove events unless we snap the initial
+    // position on touch-down, so the first drag doesn't fling from the last
+    // mouse position.
+    const onDown = (e) => {
+      px = e.clientX;
+      py = e.clientY;
+      cx = e.clientX;
+      cy = e.clientY;
+    };
+
+    const onUp = () => {
+      // On touch, hide the pointer visual again once the finger lifts.
+      if (touch) {
+        shown = false;
+        gsap.to(cursor.current, { opacity: 0, duration: 0.4 });
+        clearTimeout(idle);
+        stopBloom();
+      }
+    };
+
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerdown', onDown, { passive: true });
+    window.addEventListener('pointerup', onUp, { passive: true });
+    window.addEventListener('pointercancel', onUp, { passive: true });
+    if (fine) document.documentElement.classList.add('has-cursor');
 
     /* ------------------------------------------------------------ frame */
 
     const tick = () => {
       const t = gsap.ticker.time;
 
-      if (fine && cursor.current) {
+      if (cursor.current) {
         cx += (px - cx) * 0.24;
         cy += (py - cy) * 0.24;
         const lean = Math.max(-9, Math.min(9, vx * 0.5));
@@ -187,13 +211,16 @@ export default function EffectsLayer() {
 
     };
 
-    if (fine) gsap.ticker.add(tick);
+    gsap.ticker.add(tick);
 
     return () => {
       off();
       gsap.ticker.remove(tick);
       clearTimeout(idle);
       window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onUp);
       document.documentElement.classList.remove('has-cursor');
       gsap.killTweensOf(states);
     };
