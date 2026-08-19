@@ -1,0 +1,845 @@
+/* ============================================================
+   Divya — freelance portfolio
+   White paper, black ink. Playfair Display for voice,
+   Inter for everything that has a job to do.
+   ============================================================ */
+
+:root {
+  --paper: #ffffff;
+  --ink: #0b0b0b;
+  --ash: #6e6e6e;          /* secondary text — 4.8:1 on white */
+  --rule: #e4e2de;         /* hairlines, very slightly warm */
+  --blue: #1b44e8;         /* accent, used sparingly */
+  --gold: #a07a22;         /* accent, used sparingly */
+
+  --display: 'Playfair Display', 'Iowan Old Style', Georgia, serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+
+  --gutter: clamp(1.5rem, 6vw, 7rem);
+  --bay: clamp(7rem, 18vh, 13rem);   /* vertical rhythm between sections */
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  line-height: 1.65;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: -0.021em;
+  line-height: 0.98;
+  margin: 0;
+}
+
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 1.5px solid var(--blue);
+  outline-offset: 4px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Shared utility — small caps-ish label */
+.label {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--ash);
+  line-height: 1;
+}
+
+/* ------------------------------------------------------------ 1 · hero */
+
+.hero {
+  min-height: 100svh;
+  padding: var(--gutter);
+  padding-bottom: clamp(3rem, 10vh, 6rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+}
+
+.hero__title {
+  font-size: clamp(3.25rem, 12.5vw, 11rem);
+  line-height: 0.92;
+  max-width: 14ch;
+}
+
+/* The mask has to clear Playfair's italic descenders, or the "y" is cut. */
+.hero__title .line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.3em;
+  margin-bottom: -0.3em;
+}
+
+.hero__title .line > span { display: block; }
+
+.hero__name { font-style: italic; }
+
+.hero__sub-wrap {
+  overflow: hidden;
+  margin-top: clamp(1.5rem, 3.5vh, 2.75rem);
+}
+
+.hero__sub {
+  display: block;
+  font-size: clamp(1rem, 1.9vw, 1.375rem);
+  color: var(--ash);
+  letter-spacing: -0.005em;
+}
+
+.hero__cue {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(1.75rem, 5vh, 3rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.9rem;
+  color: var(--ink);
+}
+
+.hero__cue-label {
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.hero__arrow { display: block; overflow: visible; }
+
+.hero__ring,
+.hero__shaft,
+.hero__head {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hero__ring { stroke-width: 0.7; stroke-dasharray: 2 5; }
+.hero__dot { fill: var(--ink); }
+.hero__dot--gold { fill: var(--gold); }
+
+/* -------------------------------------------------------- 2 · services */
+
+.services {
+  padding: 0 var(--gutter);
+}
+
+.fill-ink  { fill: var(--ink); }
+.fill-blue { fill: var(--blue); }
+.fill-gold { fill: var(--gold); }
+
+.services__list {
+  padding: clamp(2rem, 8vh, 5rem) 0 clamp(1rem, 4vh, 2.5rem);
+}
+
+/* Each service gets roughly a screen of scroll, so they arrive one at a time
+   and the margin plate has room to grow between them. */
+.service {
+  min-height: 82svh;
+  padding: clamp(3rem, 9vh, 6rem) 0;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.service:first-child { border-top: 0; }
+
+/* The last one claims no extra room, so the sticky plate stays alongside
+   the text right to the end of the section. */
+.service:last-child { min-height: auto; padding-bottom: clamp(1rem, 4vh, 2.5rem); }
+
+.service__name {
+  font-size: clamp(2.25rem, 7vw, 6.5rem);
+  max-width: 16ch;
+  text-wrap: balance;
+}
+
+/* Spoken to the client, plainly, under the serif of the title. */
+.service__line {
+  margin-top: clamp(1.1rem, 2.4vh, 1.75rem);
+  font-size: clamp(1.0625rem, 1.55vw, 1.4375rem);
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  max-width: 40ch;
+  text-wrap: pretty;
+}
+
+.service__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1.25rem 2.25rem;
+  margin-top: clamp(1.75rem, 4vh, 2.75rem);
+}
+
+.service__price {
+  font-size: 0.8125rem;
+  letter-spacing: 0.03em;
+  color: var(--ash);
+  font-variant-numeric: tabular-nums;
+}
+
+/* "See work" toggle */
+.seework {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  line-height: 1;
+}
+
+.seework__mark {
+  position: relative;
+  width: 11px;
+  height: 11px;
+  flex: none;
+}
+
+.seework__bar {
+  position: absolute;
+  inset: 50% 0 auto 0;
+  height: 1px;
+  background: currentColor;
+  transform: translateY(-50%);
+}
+
+.seework__bar--v {
+  transform: translateY(-50%) rotate(90deg);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.seework__bar--v.is-open { transform: translateY(-50%) rotate(0deg); }
+
+.seework__label {
+  position: relative;
+  padding-bottom: 3px;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  transition: background-size 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.seework:hover .seework__label { background-size: 0% 1px; }
+
+/* Expanding work panel */
+.service__panel { overflow: hidden; }
+
+.service__panel-inner { padding-top: clamp(1.5rem, 4vh, 2.5rem); }
+
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  margin-top: clamp(2rem, 5vh, 3rem);
+}
+
+.project__btn {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: none;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+}
+
+.project__media {
+  display: block;
+  overflow: hidden;
+  background: #f6f5f3;
+  aspect-ratio: 16 / 10;
+}
+
+.project--live .project__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+}
+
+.project__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.project__btn:hover .project__media img { transform: scale(1.035); }
+
+.project__foot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-top: 0.85rem;
+}
+
+.project__title {
+  font-family: var(--display);
+  font-size: 1.125rem;
+  letter-spacing: -0.01em;
+}
+
+.project__type {
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.project__hint {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--ash);
+}
+
+.mood { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.mood canvas { max-width: 100%; height: auto; display: block; }
+
+.service__note {
+  margin-top: clamp(2rem, 4vh, 2.75rem);
+  font-size: 0.8125rem;
+  color: var(--ash);
+  max-width: 48ch;
+}
+
+/* ----------------------------------------------------------- 3 · about */
+
+.about {
+  padding: calc(var(--bay) * 1.25) var(--gutter) var(--bay);
+  display: flex;
+  justify-content: center;
+}
+
+.about__p {
+  font-family: var(--display);
+  font-size: clamp(1.375rem, 2.7vw, 2.125rem);
+  line-height: 1.36;
+  letter-spacing: -0.015em;
+  text-align: center;
+  text-wrap: pretty;
+  max-width: 22ch;
+  max-width: min(60ch, 100%);
+}
+
+/* --------------------------------------------------------- 4 · contact */
+
+.contact {
+  padding: 0 var(--gutter) clamp(5rem, 14vh, 9rem);
+  border-top: 1px solid var(--rule);
+  padding-top: var(--bay);
+}
+
+.contact__lede {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 3.6vw, 3rem);
+  line-height: 1.15;
+  max-width: 18ch;
+}
+
+/* The form is the action; the addresses below it are the alternatives. */
+.contact__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: clamp(2rem, 5vh, 3rem);
+  padding: 1.05rem 1.7rem;
+  border: 1px solid var(--ink);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+  transition: background-color 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+              color 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.contact__cta:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.contact__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(2rem, 6vw, 6rem);
+  margin-top: clamp(2.5rem, 7vh, 4rem);
+}
+
+.contact__list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.contact__link {
+  text-decoration: none;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  letter-spacing: -0.01em;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  padding-bottom: 3px;
+  transition: background-size 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.contact__link:hover { background-size: 0% 1px; }
+
+/* ------------------------------------------------------- the pointer */
+
+.cf {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* Only taken over once the layer is live, so a failed script still leaves
+   people with a pointer. */
+.has-cursor,
+.has-cursor * { cursor: none !important; }
+
+.cf__cursor { will-change: transform; }
+
+.cf__dial,
+.cf__petals,
+.cf__link,
+.cf__bloom {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cf__dial { stroke-width: 0.7; stroke-dasharray: 2 4; }
+.cf__petals { stroke-width: 0.8; }
+.cf__petals--accent { stroke: var(--blue); stroke-width: 0.6; }
+.cf__link { stroke-width: 0.55; stroke: #8a8a8a; }
+.cf__core { fill: var(--ink); }
+
+.cf__bloom { stroke-width: 0.7; }
+
+.cf__num,
+.cf__plate {
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  fill: var(--ash);
+}
+
+.cf__plate { font-size: 8.5px; fill: var(--ink); }
+
+/* ------------------------------------------------- project detail view */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--paper);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.overlay__close {
+  position: fixed;
+  top: clamp(1rem, 3vw, 2.25rem);
+  right: clamp(1rem, 3vw, 2.25rem);
+  z-index: 2;
+  appearance: none;
+  border: 0;
+  background: var(--paper);
+  cursor: pointer;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.75rem;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.overlay__close svg { transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.overlay__close:hover svg { transform: rotate(90deg); }
+
+.overlay__scroll { padding: clamp(4.5rem, 10vh, 7rem) var(--gutter) clamp(5rem, 12vh, 8rem); }
+
+/* The paragraph leads, the work follows. */
+.overlay__text {
+  max-width: 62ch;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
+.overlay__blurb {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #303030;
+  text-wrap: pretty;
+  max-width: 58ch;
+}
+
+.overlay__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.35rem;
+  text-decoration: none;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding-bottom: 3px;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  transition: background-size 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.overlay__link:hover { background-size: 0% 1px; }
+
+.overlay__hero {
+  margin: clamp(3rem, 8vh, 5rem) 0 0;
+  display: flex;
+  justify-content: center;
+}
+
+.overlay__video {
+  width: 100%;
+  max-height: 84svh;
+  background: var(--ink);
+  display: block;
+}
+
+.overlay__hero img {
+  width: 100%;
+  max-height: 84svh;
+  object-fit: contain;
+  object-position: center;
+}
+
+.overlay__live {
+  width: min(100%, 78svh);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.overlay__title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: -0.022em;
+}
+
+
+.overlay__frames {
+  margin-top: clamp(4rem, 10vh, 7rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 6vh, 4.5rem);
+}
+
+.overlay__frame { margin: 0; }
+
+.overlay__frame img {
+  width: 100%;
+  max-height: 88svh;
+  object-fit: contain;
+}
+
+/* --------------------------------------------- laid-out case study view */
+
+.story {
+  margin-top: clamp(3.5rem, 9vh, 6rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3.5rem, 10vh, 7rem);
+}
+
+.story__block { display: flex; flex-direction: column; }
+
+.story__h {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  font-weight: 400;
+  letter-spacing: -0.018em;
+  line-height: 1.05;
+  margin: 0 0 1.1rem;
+}
+
+.story__p {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #303030;
+  max-width: 58ch;
+  text-wrap: pretty;
+}
+
+.story__p + .story__p { margin-top: 0.9rem; }
+
+.story__figure {
+  margin: clamp(1.75rem, 4vh, 2.75rem) 0 0;
+}
+
+.story__figure img {
+  width: 100%;
+  max-width: 46rem;
+  max-height: 82svh;
+  object-fit: contain;
+  object-position: left top;
+  border: 1px solid var(--rule);
+}
+
+/* The aerial plate is evidence at full width, not a document. */
+.story__figure--wide img { max-width: none; border: 0; }
+
+/* The redrawn diagrams keep the page's left margin, like everything else. */
+.story__figure--dgm { max-width: 60rem; width: 100%; }
+
+.dgm { width: 100%; height: auto; overflow: visible; }
+
+.dgm__ring {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.8;
+  stroke-dasharray: 3 5;
+  vector-effect: non-scaling-stroke;
+}
+
+.dgm__spoke {
+  fill: none;
+  stroke: #8a8a8a;
+  stroke-width: 0.7;
+  vector-effect: non-scaling-stroke;
+}
+
+.dgm__arrow {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.dgm__dot { fill: var(--ink); }
+
+.dgm__label {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  fill: var(--ink);
+}
+
+.dgm__note {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  fill: var(--ash);
+}
+
+.dgm__core {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 21px;
+  fill: var(--ink);
+}
+
+.dgm__core--sm { font-size: 15px; fill: var(--ash); }
+
+.dgm-list { display: none; }
+
+.dgm-list__core {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.375rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.25rem;
+}
+
+.dgm-list__items { display: flex; flex-direction: column; }
+
+.dgm-list__items li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.dgm-list__items li:last-child { border-bottom: 1px solid var(--rule); }
+
+.dgm-list__label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.dgm-list__note { font-size: 0.8125rem; color: var(--ash); }
+
+.dgm-list__loop {
+  margin-top: 0.85rem;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--ash);
+}
+
+.story__cap {
+  margin-top: 0.85rem;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--ash);
+  max-width: 52ch;
+}
+
+.story__src {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.story__cols {
+  margin-top: clamp(2rem, 5vh, 3rem);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.75rem);
+  align-items: start;
+}
+
+.story__col { margin: 0; }
+
+.story__col img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+}
+
+.story__col-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  padding-bottom: 0.85rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--ink);
+}
+
+.story__note {
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: var(--ash);
+  max-width: 74ch;
+  padding-top: clamp(1.5rem, 4vh, 2.5rem);
+  border-top: 1px solid var(--rule);
+}
+
+/* -------------------------------------------------------------- narrow */
+
+@media (max-width: 900px) {
+  .services__list { padding-top: clamp(2.5rem, 8vh, 4rem); }
+  .service { min-height: 56svh; }
+  .service__name { max-width: 100%; }
+  .service__line { max-width: 100%; }
+}
+
+@media (max-width: 900px) {
+  .story__cols { grid-template-columns: 1fr; gap: clamp(2.5rem, 6vh, 3.5rem); }
+  /* The radial plans need width to stay legible; below this they are read
+     as lists carrying the same relationships. */
+  .dgm { display: none; }
+  .dgm-list { display: block; }
+}
+
+@media (max-width: 700px) {
+  .projects { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .overlay__close-label { display: none; }
+}
+
+/* ------------------------------------------------------ reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
